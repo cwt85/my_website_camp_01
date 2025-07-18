@@ -1,0 +1,118 @@
+<!--這裡是第一題-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>這裡是第一題</title>
+    <link rel="stylesheet" href="Q1.css">
+</head>
+<body>
+    <h1>這裡是第一題</h1>
+    <label for="answer">請輸入答案</label>
+    <input type="text" id="answer" placeholder="請輸入答案(三個字)">
+    <button onclick="checkAnswer()">確認</button>
+    <script>
+        function checkAnswer() 
+        {
+            const answer = document.getElementById('answer').value;
+            if (answer === '南投縣') // 檢查答案是否正確
+            {
+               alert('恭喜答對了！');
+            } 
+            else 
+            {
+               alert('答案錯誤，請重新輸入。');
+                document.getElementById('answer').value = ''; // 清空輸入框
+            }
+        }
+    </script>
+    <p>以下是提示，請回答問題並按下按鈕(記得把提示記在腦海裡喔~)</p>
+<div class="quiz-box">
+  
+    <label for="Tips1">1.這次宿營1~10分打幾分？</label>
+    <input type="text" id="Tips1" placeholder="請輸入答案">
+    <button onclick="checkTips1()">確認</button>
+   
+    <br>
+    <label for="Tips2">2.經過這幾天的相處，你覺得最讓你欣賞的人是誰？</label>
+    <input type="text" id="Tips2" placeholder="請輸入答案">
+    <button onclick="checkTips2()">確認</button>
+    <br>
+    <label for="Tips3">3.系學會會長是誰？</label>
+    <input type="text" id="Tips3" placeholder="請輸入答案">
+    <button onclick="checkTips3()">確認</button>
+    <br>
+</div>
+    <script>
+       
+        function checkTips1() // 檢查提示1的答案
+        {
+            const tips1 = document.getElementById('Tips1').value;
+           
+            var TipsName = 'tips1';
+            if(tips1.trim())//去除前後空格，檢查是否有輸入
+            {
+              alert('提示1：這是台灣的一個縣');
+              SubmitToGoogleSheets(TipsName,tips1);
+              
+            }else 
+            {
+              alert('請輸入答案');
+            }           
+            document.getElementById('Tips1').value = ''; // 清空輸入框
+        }
+        function checkTips2() // 檢查提示2的答案
+        {
+            const tips2 = document.getElementById('Tips2').value;
+            var TipsName = 'tips2';
+            if(tips2.trim())//去除前後空格，檢查是否有輸入
+            {
+              alert('提示2：在中部');
+              SubmitToGoogleSheets(TipsName,tips2);
+            }else 
+            {
+              alert('請輸入答案');
+            }           
+            document.getElementById('Tips2').value = ''; // 清空輸入框
+        }
+        function checkTips3() // 檢查提示3的答案
+        {
+            const tips3 = document.getElementById('Tips3').value;
+            var TipsName = 'tips3';
+              if(!tips3.trim())//去除前後空格，檢查是否有輸入
+              {
+                // 如果輸入框為空，顯示提示
+                alert('請輸入答案');
+                return;
+              }
+              else
+              {              
+               if(tips3==="余秉軒")//檢查答案是否正確
+               {
+                alert('提示3：不靠海');
+                SubmitToGoogleSheets(TipsName,tips3);
+               }
+               else 
+               {
+                alert('怎麼可以答錯~~會長哭暈在廁所裡了！');
+               }           
+              document.getElementById('Tips3').value = ''; // 清空輸入框
+              }      
+        }
+        function SubmitToGoogleSheets(TipsName,tips)// 提交提示到 Google Sheets
+        {
+          let form = new FormData();
+              form.append(TipsName, tips);
+
+              fetch('https://script.google.com/macros/s/AKfycbxMfyI6RTpTqMzkTaerXlurNMBAYUMwDgJPAYzIxOAswOW3yGF3_67fgg614wGkpopw/exec', {
+                method: 'POST',
+                body: form // 不要加 headers
+              })
+              .then(res => res.json())
+              .then(console.log)
+              .catch(console.error);
+        }
+    </script>
+</body>
+</html>
