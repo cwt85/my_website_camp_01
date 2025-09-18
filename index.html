@@ -15,16 +15,27 @@
     <script>
         function checkAnswer() 
         {
+          try
+          {
             const answer = document.getElementById('answer').value;
+            var Answer='answer';
             if (answer === '南投縣') // 檢查答案是否正確
             {
                alert('恭喜答對了！');
+               SubmitToGoogleSheets(Answer,answer);
             } 
             else 
             {
                alert('答案錯誤，請重新輸入。');
-                document.getElementById('answer').value = ''; // 清空輸入框
+               SubmitToGoogleSheets(Answer,answer);
+               document.getElementById('answer').value = ''; // 清空輸入框
             }
+          }catch(e)
+          {
+            alert("發生錯誤，請重新輸入");
+          }
+
+            
         }
     </script>
     <p>以下是提示，請回答問題並按下按鈕(記得把提示記在腦海裡喔~)</p>
@@ -100,18 +111,26 @@
               document.getElementById('Tips3').value = ''; // 清空輸入框
               }      
         }
-        function SubmitToGoogleSheets(TipsName,tips)// 提交提示到 Google Sheets
+        function SubmitToGoogleSheets(TipsName,tips,sheetName = 'Q1回答')// 提交提示到 Google Sheets
         {
-          let form = new FormData();
+          try
+          {
+            let form = new FormData();
+              form.append('sheetName', sheetName);
               form.append(TipsName, tips);
 
-              fetch('https://script.google.com/macros/s/AKfycbxMfyI6RTpTqMzkTaerXlurNMBAYUMwDgJPAYzIxOAswOW3yGF3_67fgg614wGkpopw/exec', {
+              fetch('https://script.google.com/macros/s/AKfycbyAvGrFPoupW6FOA-svHkw6iOX7DoD5iTKD7YaBUFjq9Vv1gCwdfGYxwjggTR2qVHgV/exec', {
                 method: 'POST',
                 body: form // 不要加 headers
               })
               .then(res => res.json())
               .then(console.log)
               .catch(console.error);
+          }catch(e)
+          {
+            alert("發生錯誤，請重新輸入");
+          }
+              
         }
     </script>
 </body>
